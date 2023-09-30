@@ -6,7 +6,7 @@ import 'package:appdemo/user/info_screen.dart';
 import 'package:appdemo/screens/intro_screen.dart';
 import 'package:appdemo/screens/login_screen.dart';
 import 'package:appdemo/screens/myhome_screen.dart';
-import 'package:appdemo/screens/notification_screen.dart';
+import 'package:appdemo/notificaton/notification_screen.dart';
 import 'package:appdemo/screens/qr_screen.dart';
 import 'package:appdemo/screens/setting_screen.dart';
 import 'package:appdemo/statistic/statistic_screen.dart';

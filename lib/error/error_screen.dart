@@ -245,58 +245,56 @@ class _ErrorScreenState extends State<ErrorScreen> {
                                                 255, 241, 239, 239),
                                             borderRadius:
                                                 BorderRadius.circular(20)),
-                                        child: Expanded(
-                                          child: Row(
-                                            children: [
-                                              const CircleAvatar(
-                                                backgroundImage: AssetImage(
-                                                    'assets/images/logo-bo-y-te.jpg'),
-                                                radius: 30,
-                                              ),
-                                              const SizedBox(
-                                                width: 50,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      device.title,
-                                                      style: const TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    Text(
-                                                      'Model: ${device.model}',
+                                        child: Row(
+                                          children: [
+                                            const CircleAvatar(
+                                              backgroundImage: AssetImage(
+                                                  'assets/images/logo-bo-y-te.jpg'),
+                                              radius: 30,
+                                            ),
+                                            const SizedBox(
+                                              width: 50,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    device.title,
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  Text(
+                                                    'Model: ${device.model}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  Text(
+                                                    'Serial: ${device.serial}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  Text(
+                                                      'Trạng thái: ${device.status}',
                                                       style: const TextStyle(
                                                           fontSize: 12,
                                                           fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                    Text(
-                                                      'Serial: ${device.serial}',
-                                                      style: const TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                    Text(
-                                                        'Trạng thái: ${device.status}',
-                                                        style: const TextStyle(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400)),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                                              FontWeight
+                                                                  .w400)),
+                                                ],
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ));
                                 } else {

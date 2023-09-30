@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -10,6 +11,9 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   bool isSwitched = false;
   bool isSwitchedKey = false;
+  final emailStore = new FlutterSecureStorage();
+  final passwordStore = new FlutterSecureStorage();
+  bool isLoading = true;
   void toggleSwitch(bool value) {
     if (isSwitched == false) {
       setState(() {
@@ -34,6 +38,36 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
+  void clearEmailAndPassword() {
+    if (isSwitchedKey == false) {
+      emailStore.delete(key: 'email1');
+      passwordStore.delete(key: 'password1');
+      emailStore.delete(key: 'email');
+      passwordStore.delete(key: 'password');
+    }
+  }
+
+  String? email;
+  String? password;
+  void getSaveEmailAndPassword() async {
+    email = await emailStore.read(key: 'email');
+    password = await passwordStore.read(key: 'password');
+    if (email != null) {
+      setState(() {
+        isSwitchedKey = true;
+      });
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getSaveEmailAndPassword();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +86,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   topRight: Radius.circular(20), topLeft: Radius.circular(20))),
           child: Column(
             children: [
+              isLoading?CircularProgressIndicator():
               Container(
                 margin: const EdgeInsets.only(
                     top: 10, right: 10, left: 10, bottom: 10),
@@ -70,7 +105,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         alignment: Alignment.center,
                         children: [
                           const Row(
-                            //mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 width: 20,
@@ -100,11 +134,10 @@ class _SettingScreenState extends State<SettingScreen> {
                         ],
                       )),
                   Divider(
-                    //Divider tạo dòng kẻ ngang
-                    color: Colors.blue[700], // Màu của dòng kẻ
-                    thickness: 1.4, // Độ dày của dòng kẻ
-                    indent: 20, // Khoảng cách từ lề trái
-                    endIndent: 20, // Khoảng cách từ lề phải
+                    color: Colors.blue[700],
+                    thickness: 1.4,
+                    indent: 20,
+                    endIndent: 20,
                   ),
                   Container(
                     height: 70,
@@ -149,5 +182,13 @@ class _SettingScreenState extends State<SettingScreen> {
             ],
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    if (isSwitchedKey == false) {
+      clearEmailAndPassword();
+    }
+    super.dispose();
   }
 }

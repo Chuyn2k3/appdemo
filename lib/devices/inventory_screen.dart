@@ -1,4 +1,6 @@
 import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/inventory/inventoryModel.dart';
+import 'package:appdemo/services/api.dart';
 import 'package:flutter/material.dart';
 
 class InventoryScreen extends StatefulWidget {
@@ -10,6 +12,7 @@ class InventoryScreen extends StatefulWidget {
 }
 
 class _InventoryScreenState extends State<InventoryScreen> {
+  TextEditingController _textEditingController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,7 +239,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     style: const TextStyle(
                         color: Color.fromARGB(255, 137, 37, 37)),
                     maxLines: 500,
-                    //controller: _textEditingController,
+                    controller: _textEditingController,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Color.fromARGB(255, 227, 224, 224),
@@ -251,7 +254,65 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   ),
                 ),
                 GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      if (_textEditingController.text.isNotEmpty) {
+                        try {
+                          InventoryModel? inventory = await DemoAPI()
+                              .createInventoryDevice(widget.models,
+                                  _textEditingController.text.toString());
+                          if (inventory!.statusCode == 200) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Thông báo'),
+                                  content: Text(inventory.message!),
+                                );
+                              },
+                            );
+
+                            // Đóng hộp thoại sau vài giây (ở đây là 3 giây)
+                            Future.delayed(const Duration(seconds: 3), () {
+                              Navigator.of(context).pop();
+                            });
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: Text('Thông báo'),
+                                  content: Text('Kiểm kê không thành công'),
+                                );
+                              },
+                            );
+
+                            // Đóng hộp thoại sau vài giây (ở đây là 3 giây)
+                            Future.delayed(const Duration(seconds: 3), () {
+                              Navigator.of(context).pop();
+                            });
+                          }
+                        } catch (e) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const AlertDialog(
+                                title: Text('Thông báo'),
+                                content: Text('Lỗi'),
+                              );
+                            },
+                          );
+                        }
+                      } else
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AlertDialog(
+                              title: Text('Thông báo'),
+                              content: Text('Nhập lý do báo hỏng'),
+                            );
+                          },
+                        );
+                    },
                     child: Container(
                       margin: const EdgeInsets.all(10),
                       alignment: Alignment.center,

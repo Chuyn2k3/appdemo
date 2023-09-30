@@ -2,6 +2,10 @@ import 'package:appdemo/devices/report_screen.dart';
 import 'package:appdemo/devices/inventory_screen.dart';
 import 'package:appdemo/devices/device_model.dart';
 import 'package:appdemo/devices/statusDevices.dart';
+import 'package:appdemo/employees/employee_model.dart';
+import 'package:appdemo/employees/get_employee_list.dart';
+import 'package:appdemo/inventory/inventoryInformationModel.dart';
+import 'package:appdemo/services/api.dart';
 import 'package:flutter/material.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -12,6 +16,34 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  Future<List<EmployeeData>?> DataList() async {
+    final List<EmployeeData>? dataList = await getDataEmployeeFromApi();
+
+    return dataList;
+  }
+
+  List<EmployeeData> _employee = [];
+  void fetchEmployeeData() async {
+    _employee = (await DataList())!;
+  }
+
+  String getUserInventory(int user_id) {
+    String name = '';
+    for (EmployeeData employee in _employee) {
+      if (employee.id == user_id) {
+        name = employee.displayname;
+        break;
+      }
+    }
+    return name;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEmployeeData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,11 +115,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               fontWeight: FontWeight.w500)),
                     ),
                     Divider(
-                      //Divider tạo dòng kẻ ngang
-                      color: Colors.blue[700], // Màu của dòng kẻ
-                      thickness: 1.4, // Độ dày của dòng kẻ
-                      indent: 20, // Khoảng cách từ lề trái
-                      endIndent: 20, // Khoảng cách từ lề phải
+                      color: Colors.blue[700], 
+                      thickness: 1.4, 
+                      indent: 20, 
+                      endIndent: 20, 
                     ),
                     Container(
                         margin: const EdgeInsets.only(
@@ -131,12 +162,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ])
                           ],
                         )),
-                    Divider(
-                      //Divider tạo dòng kẻ ngang
-                      color: Colors.blue[700], // Màu của dòng kẻ
-                      thickness: 1.4, // Độ dày của dòng kẻ
-                      indent: 20, // Khoảng cách từ lề trái
-                      endIndent: 20, // Khoảng cách từ lề phải
+                    Divider(    
+                      color: Colors.blue[700], 
+                      thickness: 1.4, 
+                      indent: 20, 
+                      endIndent: 20, 
                     ),
                     Container(
                         margin: const EdgeInsets.only(
@@ -245,7 +275,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    reportErrorBottomsheet(context, widget.models);
+                  },
                   child: Container(
                       height: 40,
                       width: double.infinity,
@@ -288,7 +320,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                 ),
                 GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      createInventoryBottomsheet(context, widget.models);
+                    },
                     child: Container(
                         height: 40,
                         width: double.infinity,
@@ -410,5 +444,186 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
               ])
             ])));
+  }
+
+  void reportErrorBottomsheet(BuildContext context, DeviceData models) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 400,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30))),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text('Lịch sử báo hỏng thiết bị'),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: (models.dateFailure != null)
+                      ? Container(
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30))),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Ngày báo hỏng:' + models.dateFailure!,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              const Text('Trạng thái sửa chữa'),
+                            ],
+                          ),
+                        )
+                      : const Text('Không có dữ liệu'),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Xác nhận',
+                      style: TextStyle(color: Colors.red),
+                    ))
+              ],
+            ),
+          );
+        });
+  }
+
+  void createInventoryBottomsheet(BuildContext context, DeviceData models) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 400,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30))),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text('Lịch sử kiếm kê thiết bị'),
+                const SizedBox(
+                  height: 10,
+                ),
+                Flexible(
+                  child: FutureBuilder<InventoryInformationModel?>(
+                      future: DemoAPI().dioGetInventoryInformation(models),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.dataLength != 0) {
+                            return ListView.builder(
+                                itemCount: snapshot.data!.dataLength,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: 300,
+                                          decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(15)),
+                                              color: Color.fromARGB(255, 232, 230, 230)),
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(width: 15,),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(height: 5,),
+                                                    Text(
+                                                      'Ngày kiểm kê:' +
+                                                          snapshot
+                                                              .data!.data![index].date
+                                                              .toString(),
+                                                      style: const TextStyle(
+                                                          color: Colors.black),
+                                                      
+                                                    ),
+                                                    const SizedBox(height: 5,),
+                                                    Text(
+                                                      'Ghi chú:' +
+                                                          ((snapshot
+                                                                      .data!
+                                                                      .data![index]
+                                                                      .note !=
+                                                                  null)
+                                                              ? snapshot.data!
+                                                                  .data![index].note!
+                                                              : 'Không có ghi chú'),
+                                                      style: const TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    const SizedBox(height: 5,),
+                                                    Text(
+                                                      'Người kiểm kê:' +
+                                                          getUserInventory(snapshot
+                                                              .data!
+                                                              .data![index]
+                                                              .userId!),
+                                                      style: const TextStyle(
+                                                          color: Colors.black),
+                                                    ),
+                                                    const SizedBox(height: 5,),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                });
+                          } else
+                            return const Text('Không có dữ liệu');
+                        } else
+                          return const CircularProgressIndicator();
+                      }),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Xác nhận',
+                      style: TextStyle(color: Colors.red),
+                    ))
+              ],
+            ),
+          );
+        });
   }
 }

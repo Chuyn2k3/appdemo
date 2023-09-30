@@ -1,5 +1,5 @@
 import 'package:appdemo/departments/department_screen.dart';
-import 'package:appdemo/screens/notification_screen.dart';
+import 'package:appdemo/notificaton/notification_screen.dart';
 import 'package:appdemo/services/api.dart';
 import 'package:appdemo/user/user_model.dart';
 
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: FutureBuilder<UserModel?>(
-            future: DemoAPI().diologin(),
+            future: DemoAPI().dioGetlogin(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Scaffold(

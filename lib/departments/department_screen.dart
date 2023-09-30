@@ -197,259 +197,257 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                                   255, 241, 239, 239),
                                               borderRadius:
                                                   BorderRadius.circular(20)),
-                                          child: Expanded(
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  height: 40,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft: Radius
-                                                                .circular(20),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    20)),
-                                                  ),
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    _department[index].title,
-                                                    style: const TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                height: 40,
+                                                decoration:
+                                                    const BoxDecoration(
+                                                  color: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft: Radius
+                                                              .circular(20),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20)),
                                                 ),
-                                                GestureDetector(
-                                                    onTap: () {},
-                                                    child: Container(
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              top: 10,
-                                                              bottom: 5,
-                                                              left: 15,
-                                                              right: 5),
-                                                      child: Stack(
-                                                        alignment:
-                                                            Alignment.center,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  _department[index].title,
+                                                  style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 10,
+                                                            bottom: 5,
+                                                            left: 15,
+                                                            right: 5),
+                                                    child: Stack(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const SizedBox(
+                                                              width: 7,
+                                                            ),
+                                                            const Icon(
+                                                              Icons
+                                                                  .email_outlined,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Text(
+                                                              _department[
+                                                                      index]
+                                                                  .email,
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      15,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const Positioned(
+                                                            right: 5,
+                                                            child: Icon(Icons
+                                                                .keyboard_arrow_right))
+                                                      ],
+                                                    ),
+                                                  )),
+                                              Divider(
+                                                //Divider tạo dòng kẻ ngang
+                                                color: Colors.blue[
+                                                    700], // Màu của dòng kẻ
+                                                thickness:
+                                                    1.4, // Độ dày của dòng kẻ
+                                                indent:
+                                                    10, // Khoảng cách từ lề trái
+                                                endIndent:
+                                                    10, // Khoảng cách từ lề phải
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {},
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.only(
+                                                          top: 5,
+                                                          bottom: 5,
+                                                          left: 15,
+                                                          right: 5),
+                                                  child: Stack(
+                                                    alignment:
+                                                        Alignment.center,
+                                                    children: [
+                                                      Row(
                                                         children: [
-                                                          Row(
-                                                            children: [
-                                                              const SizedBox(
-                                                                width: 7,
-                                                              ),
-                                                              const Icon(
-                                                                Icons
-                                                                    .email_outlined,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Text(
-                                                                _department[
-                                                                        index]
-                                                                    .email,
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400),
-                                                              ),
-                                                            ],
+                                                          const SizedBox(
+                                                            width: 7,
                                                           ),
-                                                          const Positioned(
-                                                              right: 5,
-                                                              child: Icon(Icons
-                                                                  .keyboard_arrow_right))
+                                                          const Icon(
+                                                            Icons
+                                                                .phone_android_outlined,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            _department[index]
+                                                                .phone,
+                                                            style: const TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
                                                         ],
                                                       ),
-                                                    )),
-                                                Divider(
-                                                  //Divider tạo dòng kẻ ngang
-                                                  color: Colors.blue[
-                                                      700], // Màu của dòng kẻ
-                                                  thickness:
-                                                      1.4, // Độ dày của dòng kẻ
-                                                  indent:
-                                                      10, // Khoảng cách từ lề trái
-                                                  endIndent:
-                                                      10, // Khoảng cách từ lề phải
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {},
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 5,
-                                                            bottom: 5,
-                                                            left: 15,
-                                                            right: 5),
-                                                    child: Stack(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            const SizedBox(
-                                                              width: 7,
-                                                            ),
-                                                            const Icon(
-                                                              Icons
-                                                                  .phone_android_outlined,
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Text(
-                                                              _department[index]
-                                                                  .phone,
-                                                              style: const TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const Positioned(
-                                                            right: 5,
-                                                            child: Icon(Icons
-                                                                .keyboard_arrow_right))
-                                                      ],
-                                                    ),
+                                                      const Positioned(
+                                                          right: 5,
+                                                          child: Icon(Icons
+                                                              .keyboard_arrow_right))
+                                                    ],
                                                   ),
                                                 ),
-                                                Divider(
-                                                  //Divider tạo dòng kẻ ngang
-                                                  color: Colors.blue[
-                                                      700], // Màu của dòng kẻ
-                                                  thickness:
-                                                      1.4, // Độ dày của dòng kẻ
-                                                  indent:
-                                                      10, // Khoảng cách từ lề trái
-                                                  endIndent:
-                                                      10, // Khoảng cách từ lề phải
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {},
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 5,
-                                                            bottom: 5,
-                                                            left: 15,
-                                                            right: 5),
-                                                    child: Stack(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            const SizedBox(
-                                                              width: 7,
-                                                            ),
-                                                            const Icon(
-                                                              Icons
-                                                                  .location_on_outlined,
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Text(
-                                                              _department[index]
-                                                                  .address,
-                                                              style: const TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const Positioned(
-                                                            right: 5,
-                                                            child: Icon(Icons
-                                                                .keyboard_arrow_right))
-                                                      ],
-                                                    ),
+                                              ),
+                                              Divider(
+                                                //Divider tạo dòng kẻ ngang
+                                                color: Colors.blue[
+                                                    700], // Màu của dòng kẻ
+                                                thickness:
+                                                    1.4, // Độ dày của dòng kẻ
+                                                indent:
+                                                    10, // Khoảng cách từ lề trái
+                                                endIndent:
+                                                    10, // Khoảng cách từ lề phải
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {},
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.only(
+                                                          top: 5,
+                                                          bottom: 5,
+                                                          left: 15,
+                                                          right: 5),
+                                                  child: Stack(
+                                                    alignment:
+                                                        Alignment.center,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          const SizedBox(
+                                                            width: 7,
+                                                          ),
+                                                          const Icon(
+                                                            Icons
+                                                                .location_on_outlined,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            _department[index]
+                                                                .address,
+                                                            style: const TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const Positioned(
+                                                          right: 5,
+                                                          child: Icon(Icons
+                                                              .keyboard_arrow_right))
+                                                    ],
                                                   ),
                                                 ),
-                                                Divider(
-                                                  //Divider tạo dòng kẻ ngang
-                                                  color: Colors.blue[
-                                                      700], // Màu của dòng kẻ
-                                                  thickness:
-                                                      1.4, // Độ dày của dòng kẻ
-                                                  indent:
-                                                      10, // Khoảng cách từ lề trái
-                                                  endIndent:
-                                                      10, // Khoảng cách từ lề phải
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DeviceInDepartmentScreen(
-                                                                    getDepartmentData:
-                                                                        _department[
-                                                                            index])));
-                                                  },
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 5,
-                                                            bottom: 5,
-                                                            left: 15,
-                                                            right: 5),
-                                                    child: const Stack(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 7,
-                                                            ),
-                                                            Icon(
-                                                              Icons.menu_open,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Text(
-                                                              "Danh sách thiết bị",
-                                                              style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Positioned(
-                                                            right: 5,
-                                                            child: Icon(Icons
-                                                                .keyboard_arrow_right))
-                                                      ],
-                                                    ),
+                                              ),
+                                              Divider(
+                                                //Divider tạo dòng kẻ ngang
+                                                color: Colors.blue[
+                                                    700], // Màu của dòng kẻ
+                                                thickness:
+                                                    1.4, // Độ dày của dòng kẻ
+                                                indent:
+                                                    10, // Khoảng cách từ lề trái
+                                                endIndent:
+                                                    10, // Khoảng cách từ lề phải
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DeviceInDepartmentScreen(
+                                                                  getDepartmentData:
+                                                                      _department[
+                                                                          index])));
+                                                },
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.only(
+                                                          top: 5,
+                                                          bottom: 5,
+                                                          left: 15,
+                                                          right: 5),
+                                                  child: const Stack(
+                                                    alignment:
+                                                        Alignment.center,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 7,
+                                                          ),
+                                                          Icon(
+                                                            Icons.menu_open,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            "Danh sách thiết bị",
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Positioned(
+                                                          right: 5,
+                                                          child: Icon(Icons
+                                                              .keyboard_arrow_right))
+                                                    ],
                                                   ),
-                                                )
-                                              ],
-                                            ),
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         );
                                       } else {

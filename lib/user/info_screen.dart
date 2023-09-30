@@ -1,6 +1,7 @@
 import 'package:appdemo/screens/login_screen.dart';
 import 'package:appdemo/screens/setting_screen.dart';
 import 'package:appdemo/services/api.dart';
+import 'package:appdemo/user/logout_model.dart';
 import 'package:appdemo/user/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     topRight: Radius.circular(20),
                     topLeft: Radius.circular(20))),
             child: FutureBuilder<UserModel?>(
-                future: DemoAPI().diologin(),
+                future: DemoAPI().dioGetlogin(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView(children: [
@@ -283,11 +284,27 @@ class _InfoScreenState extends State<InfoScreen> {
                                 endIndent: 20,
                               ),
                               GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamedAndRemoveUntil(
+                                  onTap: () async {
+                                    try {
+                                      LogoutModel? log= await DemoAPI().dioLogout();
+                                      if(log!.statusCode==200){
+                                      Navigator.pushNamedAndRemoveUntil(
                                         context,
                                         LoginScreen.routeName,
                                         (route) => false);
+                                    }
+                                    } catch (e) {
+                                           showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: Text('Thông báo'),
+                                  content: Text('Đăng xuất thất bại'),
+                                );
+                              },
+                            );
+                                    }
+                                    
                                   },
                                   child: Container(
                                       height: 40,

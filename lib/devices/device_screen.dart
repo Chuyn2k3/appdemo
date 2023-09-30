@@ -199,109 +199,107 @@ class _DeviceScreenState extends State<DeviceScreen> {
                                       bottomLeft: Radius.circular(30),
                                       bottomRight: Radius.circular(30))),
                               alignment: Alignment.center,
-                              child: Expanded(
-                                child: TextButton(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            _selectedState,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16),
-                                            textAlign: TextAlign.center,
-                                          ),
+                              child: TextButton(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(30)),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _selectedState,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        const Icon(
-                                          Icons.arrow_drop_down,
-                                          color:
-                                              Color.fromARGB(255, 93, 92, 92),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_drop_down,
+                                        color:
+                                            Color.fromARGB(255, 93, 92, 92),
+                                      ),
+                                    ],
                                   ),
-                                  onPressed: () {
-                                    showCupertinoModalPopup(
-                                      context: context,
-                                      builder: (_) {
-                                        return CupertinoPopupSurface(
-                                          isSurfacePainted: false,
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(30),
-                                                    topRight:
-                                                        Radius.circular(30))),
-                                            height:
-                                                500, // Điều chỉnh chiều cao của bottom sheet
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                Expanded(
-                                                  child:
-                                                      CupertinoPicker.builder(
-                                                    itemExtent:
-                                                        40.0, // Chiều cao của mỗi item trong picker
-                                                    onSelectedItemChanged:
-                                                        (int index) {
-                                                      // Xử lý khi phần tử được chọn thay đổi
-                                                      setState(() {
-                                                        _selectedState =
-                                                            listStatus[index];
+                                ),
+                                onPressed: () {
+                                  showCupertinoModalPopup(
+                                    context: context,
+                                    builder: (_) {
+                                      return CupertinoPopupSurface(
+                                        isSurfacePainted: false,
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(30),
+                                                  topRight:
+                                                      Radius.circular(30))),
+                                          height:
+                                              500, // Điều chỉnh chiều cao của bottom sheet
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 50,
+                                              ),
+                                              Expanded(
+                                                child:
+                                                    CupertinoPicker.builder(
+                                                  itemExtent:
+                                                      40.0, // Chiều cao của mỗi item trong picker
+                                                  onSelectedItemChanged:
+                                                      (int index) {
+                                                    // Xử lý khi phần tử được chọn thay đổi
+                                                    setState(() {
+                                                      _selectedState =
+                                                          listStatus[index];
 
-                                                        //searchOnStatusDevice();
-                                                      });
-                                                    },
-                                                    childCount: listStatus
-                                                        .length, // Số lượng phần tử
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      // Tùy chỉnh giao diện của ô hiển thị phần tử
-                                                      return Center(
-                                                        child: Container(
-                                                          height: 40,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                            listStatus[index],
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 18.0,
-                                                              color: Colors
-                                                                  .black, // Màu văn bản
-                                                            ),
+                                                      //searchOnStatusDevice();
+                                                    });
+                                                  },
+                                                  childCount: listStatus
+                                                      .length, // Số lượng phần tử
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    // Tùy chỉnh giao diện của ô hiển thị phần tử
+                                                    return Center(
+                                                      child: Container(
+                                                        height: 40,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          listStatus[index],
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 18.0,
+                                                            color: Colors
+                                                                .black, // Màu văn bản
                                                           ),
                                                         ),
-                                                      );
-                                                    },
-                                                  ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                                Expanded(
-                                                  child: CupertinoButton(
-                                                      onPressed: applySelection,
-                                                      child: const Text(
-                                                          'Xác Nhận')),
-                                                )
-                                              ],
-                                            ),
+                                              ),
+                                              Expanded(
+                                                child: CupertinoButton(
+                                                    onPressed: applySelection,
+                                                    child: const Text(
+                                                        'Xác Nhận')),
+                                              )
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             )
                           ],
@@ -333,109 +331,107 @@ class _DeviceScreenState extends State<DeviceScreen> {
                                       bottomLeft: Radius.circular(30),
                                       bottomRight: Radius.circular(30))),
                               alignment: Alignment.center,
-                              child: Expanded(
-                                child: TextButton(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            _selectedDepartment,
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16),
-                                            textAlign: TextAlign.center,
-                                          ),
+                              child: TextButton(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(30)),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _selectedDepartment,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        const Icon(
-                                          Icons.arrow_drop_down,
-                                          color:
-                                              Color.fromARGB(255, 93, 92, 92),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_drop_down,
+                                        color:
+                                            Color.fromARGB(255, 93, 92, 92),
+                                      ),
+                                    ],
                                   ),
-                                  onPressed: () {
-                                    showCupertinoModalPopup(
-                                      context: context,
-                                      builder: (_) {
-                                        return CupertinoPopupSurface(
-                                          isSurfacePainted: false,
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(30),
-                                                    topRight:
-                                                        Radius.circular(30))),
-                                            height:
-                                                500, // Điều chỉnh chiều cao của bottom sheet
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                Expanded(
-                                                  child:
-                                                      CupertinoPicker.builder(
-                                                    itemExtent:
-                                                        40.0, // Chiều cao của mỗi item trong picker
-                                                    onSelectedItemChanged:
-                                                        (int index) {
-                                                      // Xử lý khi phần tử được chọn thay đổi
-                                                      setState(() {
-                                                        _selectedDepartment =
-                                                            listDepartment[
-                                                                index];
-                                                      });
-                                                    },
-                                                    childCount: listDepartment
-                                                        .length, // Số lượng phần tử
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      // Tùy chỉnh giao diện của ô hiển thị phần tử
-                                                      return Center(
-                                                        child: Container(
-                                                          height: 40,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                            listDepartment[
-                                                                index],
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 18.0,
-                                                              color: Colors
-                                                                  .black, // Màu văn bản
-                                                            ),
+                                ),
+                                onPressed: () {
+                                  showCupertinoModalPopup(
+                                    context: context,
+                                    builder: (_) {
+                                      return CupertinoPopupSurface(
+                                        isSurfacePainted: false,
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(30),
+                                                  topRight:
+                                                      Radius.circular(30))),
+                                          height:
+                                              500, // Điều chỉnh chiều cao của bottom sheet
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 50,
+                                              ),
+                                              Expanded(
+                                                child:
+                                                    CupertinoPicker.builder(
+                                                  itemExtent:
+                                                      40.0, // Chiều cao của mỗi item trong picker
+                                                  onSelectedItemChanged:
+                                                      (int index) {
+                                                    // Xử lý khi phần tử được chọn thay đổi
+                                                    setState(() {
+                                                      _selectedDepartment =
+                                                          listDepartment[
+                                                              index];
+                                                    });
+                                                  },
+                                                  childCount: listDepartment
+                                                      .length, // Số lượng phần tử
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    // Tùy chỉnh giao diện của ô hiển thị phần tử
+                                                    return Center(
+                                                      child: Container(
+                                                        height: 40,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          listDepartment[
+                                                              index],
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 18.0,
+                                                            color: Colors
+                                                                .black, // Màu văn bản
                                                           ),
                                                         ),
-                                                      );
-                                                    },
-                                                  ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                                Expanded(
-                                                  child: CupertinoButton(
-                                                      onPressed: applySelection,
-                                                      child: const Text(
-                                                          'Xác Nhận')),
-                                                )
-                                              ],
-                                            ),
+                                              ),
+                                              Expanded(
+                                                child: CupertinoButton(
+                                                    onPressed: applySelection,
+                                                    child: const Text(
+                                                        'Xác Nhận')),
+                                              )
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             )
                           ],
@@ -488,65 +484,63 @@ class _DeviceScreenState extends State<DeviceScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           20)),
-                                              child: Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    const CircleAvatar(
-                                                      backgroundImage: AssetImage(
-                                                          'assets/images/logo-bo-y-te.jpg'),
-                                                      radius: 30,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 30,
-                                                    ),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            _devices[index]
-                                                                .title,
-                                                            style: const TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                          Text(
-                                                            'Model: ${_devices[index].model}',
+                                              child: Row(
+                                                children: [
+                                                  const CircleAvatar(
+                                                    backgroundImage: AssetImage(
+                                                        'assets/images/logo-bo-y-te.jpg'),
+                                                    radius: 30,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          _devices[index]
+                                                              .title,
+                                                          style: const TextStyle(
+                                                              fontSize: 15,
+                                                              color: Colors
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        Text(
+                                                          'Model: ${_devices[index].model}',
+                                                          style: const TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                        Text(
+                                                          'Serial: ${_devices[index].serial}',
+                                                          style: const TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                        Text(
+                                                            'Trạng thái: ${_devices[index].status}',
                                                             style: const TextStyle(
                                                                 fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w400),
-                                                          ),
-                                                          Text(
-                                                            'Serial: ${_devices[index].serial}',
-                                                            style: const TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                          ),
-                                                          Text(
-                                                              'Trạng thái: ${_devices[index].status}',
-                                                              style: const TextStyle(
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400)),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
+                                                                        .w400)),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
                                               ),
                                             ));
                                       } else {
