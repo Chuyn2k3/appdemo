@@ -1,5 +1,5 @@
 import 'package:appdemo/services/api.dart';
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 
 Future<List<DeviceData>?> getDataFromApi() async {
   final DeviceModel? apiResponse = await DemoAPI().dioGetDeviceData();

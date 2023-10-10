@@ -3,6 +3,7 @@ import 'package:appdemo/departments/get_department_list.dart';
 import 'package:appdemo/services/api.dart';
 import 'package:appdemo/departments/department_model.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DepartmentScreen extends StatefulWidget {
   const DepartmentScreen({super.key});
@@ -190,7 +191,6 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                       if (_department.isNotEmpty) {
                                         return Container(
                                           margin: const EdgeInsets.all(20),
-                                          //padding: EdgeInsets.only(right: 30, left: 30),
                                           height: 235,
                                           decoration: BoxDecoration(
                                               color: const Color.fromARGB(
@@ -201,13 +201,13 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                             children: [
                                               Container(
                                                 height: 40,
-                                                decoration:
-                                                    const BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   color: Colors.blue,
                                                   borderRadius:
                                                       BorderRadius.only(
-                                                          topLeft: Radius
-                                                              .circular(20),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  20),
                                                           topRight:
                                                               Radius.circular(
                                                                   20)),
@@ -223,7 +223,35 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                                 ),
                                               ),
                                               GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () async{
+                                                    String? encodeQueryParameters(Map<String, String> params) {
+  return params.entries
+      .map((MapEntry<String, String> e) =>
+          '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+      .join('&');
+}
+                                                           final Uri emailUrl = Uri(
+                                                      scheme: 'mailto',
+                                                      path: _department[index]
+                                                          .email,
+                                                      query: encodeQueryParameters(<String, String>{
+      'subject': 'Example Subject & Symbols are allowed!',
+    }),    );
+
+                                                   try{
+                                                    await launchUrl(emailUrl);
+                                                   }catch(e){                                             
+                                                     showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: Text('Lỗi chuyển hướng'),
+            );
+          },
+        );
+                                                  }
+                                                  },
                                                   child: Container(
                                                     margin:
                                                         const EdgeInsets.only(
@@ -248,12 +276,10 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                                               width: 10,
                                                             ),
                                                             Text(
-                                                              _department[
-                                                                      index]
+                                                              _department[index]
                                                                   .email,
                                                               style: const TextStyle(
-                                                                  fontSize:
-                                                                      15,
+                                                                  fontSize: 15,
                                                                   color: Colors
                                                                       .black,
                                                                   fontWeight:
@@ -281,17 +307,35 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                                     10, // Khoảng cách từ lề phải
                                               ),
                                               GestureDetector(
-                                                onTap: () {},
+                                                onTap: () async {
+                                                  final Uri phoneUrl = Uri(
+                                                      scheme: 'tel',
+                                                      path: _department[index]
+                                                          .phone);
+
+                                                  if (await canLaunchUrl(phoneUrl)) {
+                                                    await launchUrl(phoneUrl);
+                                                  }
+                                                  else {
+                                                    showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: Text('Lỗi chuyển hướng'),
+            );
+          },
+        );
+                                                  }
+                                                },
                                                 child: Container(
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          top: 5,
-                                                          bottom: 5,
-                                                          left: 15,
-                                                          right: 5),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 5,
+                                                      bottom: 5,
+                                                      left: 15,
+                                                      right: 5),
                                                   child: Stack(
-                                                    alignment:
-                                                        Alignment.center,
+                                                    alignment: Alignment.center,
                                                     children: [
                                                       Row(
                                                         children: [
@@ -340,15 +384,13 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                               GestureDetector(
                                                 onTap: () {},
                                                 child: Container(
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          top: 5,
-                                                          bottom: 5,
-                                                          left: 15,
-                                                          right: 5),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 5,
+                                                      bottom: 5,
+                                                      left: 15,
+                                                      right: 5),
                                                   child: Stack(
-                                                    alignment:
-                                                        Alignment.center,
+                                                    alignment: Alignment.center,
                                                     children: [
                                                       Row(
                                                         children: [
@@ -406,15 +448,13 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                                                                           index])));
                                                 },
                                                 child: Container(
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          top: 5,
-                                                          bottom: 5,
-                                                          left: 15,
-                                                          right: 5),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 5,
+                                                      bottom: 5,
+                                                      left: 15,
+                                                      right: 5),
                                                   child: const Stack(
-                                                    alignment:
-                                                        Alignment.center,
+                                                    alignment: Alignment.center,
                                                     children: [
                                                       Row(
                                                         children: [

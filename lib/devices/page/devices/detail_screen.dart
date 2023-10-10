@@ -1,7 +1,7 @@
-import 'package:appdemo/devices/report_screen.dart';
-import 'package:appdemo/devices/inventory_screen.dart';
-import 'package:appdemo/devices/device_model.dart';
-import 'package:appdemo/devices/statusDevices.dart';
+import 'package:appdemo/data/term/app_term.dart';
+import 'package:appdemo/devices/page/report_error/report_screen.dart';
+import 'package:appdemo/devices/page/inventory/inventory_screen.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/employees/employee_model.dart';
 import 'package:appdemo/employees/get_employee_list.dart';
 import 'package:appdemo/inventory/inventoryInformationModel.dart';
@@ -355,13 +355,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           ],
                         ))),
                 ((widget.models.status.toLowerCase() ==
-                            was_broken.toLowerCase()) ||
+                            AppDeviceTerm.wasBroken.toLowerCase()) ||
                         (widget.models.status.toLowerCase() ==
-                            liquidated.toLowerCase()) ||
+                            AppDeviceTerm.liquidated.toLowerCase()) ||
                         (widget.models.status.toLowerCase() ==
-                            corrected.toLowerCase()) ||
+                            AppDeviceTerm.corrected.toLowerCase()) ||
                         (widget.models.status.toLowerCase() ==
-                            inactive.toLowerCase()))
+                            AppDeviceTerm.inactive.toLowerCase()))
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(

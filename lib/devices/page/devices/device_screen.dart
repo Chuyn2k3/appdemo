@@ -1,12 +1,15 @@
+import 'package:appdemo/data/term/app_term.dart';
 import 'package:appdemo/departments/get_department_list.dart';
+import 'package:appdemo/devices/bloc/device_bloc.dart';
+import 'package:appdemo/devices/bloc/device_bloc_state.dart';
 import 'package:appdemo/services/api.dart';
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/departments/department_model.dart';
 import 'package:appdemo/devices/get_device_list.dart';
-import 'package:appdemo/devices/statusDevices.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:appdemo/devices/detail_screen.dart';
+import 'package:appdemo/devices/page/devices/detail_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeviceScreen extends StatefulWidget {
   const DeviceScreen({super.key});
@@ -18,8 +21,8 @@ class DeviceScreen extends StatefulWidget {
 class _DeviceScreenState extends State<DeviceScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   bool isLoading = false;
-  String _selectedState = all;
-  String _selectedDepartment = all;
+  String _selectedState = AppDeviceTerm.all;
+  String _selectedDepartment = AppDeviceTerm.all;
   String? StateChoose;
   String? DepartmentChoose;
 
@@ -46,7 +49,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
   void fetchDepartmentData() async {
     _department = (await DataListDepartment())!;
     listDepartment = _department.map((e) => e.title).toList();
-    listDepartment.insert(0, all);
+    listDepartment.insert(0, AppDeviceTerm.all);
   }
 
   List<String> listDepartment = [];
@@ -256,12 +259,12 @@ class _DeviceScreenState extends State<DeviceScreen> {
                                                     // Xử lý khi phần tử được chọn thay đổi
                                                     setState(() {
                                                       _selectedState =
-                                                          listStatus[index];
+                                                        AppDeviceTerm.listStatus[index];
 
                                                       //searchOnStatusDevice();
                                                     });
                                                   },
-                                                  childCount: listStatus
+                                                  childCount: AppDeviceTerm.listStatus
                                                       .length, // Số lượng phần tử
                                                   itemBuilder:
                                                       (BuildContext context,
@@ -274,7 +277,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                                                             const EdgeInsets
                                                                 .all(8.0),
                                                         child: Text(
-                                                          listStatus[index],
+                                                          AppDeviceTerm.listStatus[index],
                                                           style:
                                                               const TextStyle(
                                                             fontSize: 18.0,
@@ -449,123 +452,124 @@ class _DeviceScreenState extends State<DeviceScreen> {
                             fontSize: 12, fontWeight: FontWeight.w200),
                       ))
                 ],
-              ),
-              isLoading
-                  ? const CircularProgressIndicator()
-                  : Flexible(
-                      child: FutureBuilder<DeviceModel?>(
-                          future: DemoAPI().dioGetDeviceData(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              if (_devices.isNotEmpty) {
-                                return ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: _devices.length,
-                                    itemBuilder: (context, index) {
-                                      if (_devices.isNotEmpty) {
-                                        return GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsScreen(
-                                                              _devices[
-                                                                  index])));
-                                            },
-                                            child: Container(
-                                              margin: const EdgeInsets.all(20),
-                                              padding: const EdgeInsets.only(
-                                                  right: 30, left: 30),
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 241, 239, 239),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: Row(
-                                                children: [
-                                                  const CircleAvatar(
-                                                    backgroundImage: AssetImage(
-                                                        'assets/images/logo-bo-y-te.jpg'),
-                                                    radius: 30,
+              ),     
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : Flexible(
+                          child: FutureBuilder<DeviceModel?>(
+                              future: DemoAPI().dioGetDeviceData(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  if (_devices.isNotEmpty) {
+                                    return ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: _devices.length,
+                                        itemBuilder: (context, index) {
+                                          if (_devices.isNotEmpty) {
+                                            return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DetailsScreen(
+                                                                  _devices[
+                                                                      index])));
+                                                },
+                                                child: Container(
+                                                  margin: const EdgeInsets.all(20),
+                                                  padding: const EdgeInsets.only(
+                                                      right: 30, left: 30),
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                      color: const Color.fromARGB(
+                                                          255, 241, 239, 239),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Row(
+                                                    children: [
+                                                      const CircleAvatar(
+                                                        backgroundImage: AssetImage(
+                                                            'assets/images/logo-bo-y-te.jpg'),
+                                                        radius: 30,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 30,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              _devices[index]
+                                                                  .title,
+                                                              style: const TextStyle(
+                                                                  fontSize: 15,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                            Text(
+                                                              'Model: ${_devices[index].model}',
+                                                              style: const TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                            ),
+                                                            Text(
+                                                              'Serial: ${_devices[index].serial}',
+                                                              style: const TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                            ),
+                                                            Text(
+                                                                'Trạng thái: ${_devices[index].status}',
+                                                                style: const TextStyle(
+                                                                    fontSize: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  const SizedBox(
-                                                    width: 30,
-                                                  ),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          _devices[index]
-                                                              .title,
-                                                          style: const TextStyle(
-                                                              fontSize: 15,
-                                                              color: Colors
-                                                                  .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          'Model: ${_devices[index].model}',
-                                                          style: const TextStyle(
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                        Text(
-                                                          'Serial: ${_devices[index].serial}',
-                                                          style: const TextStyle(
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                        Text(
-                                                            'Trạng thái: ${_devices[index].status}',
-                                                            style: const TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400)),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ));
-                                      } else {
-                                        return const Text(
-                                            'Không có thiết bị nào');
-                                      }
-                                    });
-                              } else {
-                                return Column(
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: _retryDataLoad,
-                                      child: const Text('Tải lại'),
-                                    ),
-                                    const SizedBox(
-                                      height: 50,
-                                    ),
-                                    const Text('Không có thiết bị cần tìm')
-                                  ],
-                                );
-                              }
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          }))
+                                                ));
+                                          } else {
+                                            return const Text(
+                                                'Không có thiết bị nào');
+                                          }
+                                        });
+                                  } else {
+                                    return Column(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: _retryDataLoad,
+                                          child: const Text('Tải lại'),
+                                        ),
+                                        const SizedBox(
+                                          height: 50,
+                                        ),
+                                        const Text('Không có thiết bị cần tìm')
+                                      ],
+                                    );
+                                  }
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }))
+               
             ])));
   }
 
@@ -636,11 +640,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   void applySelection() {
     Navigator.of(context).pop();
-    if ((_selectedState == all) && (_selectedDepartment == all)) {
+    if ((_selectedState == AppDeviceTerm.all) && (_selectedDepartment == AppDeviceTerm.all)) {
       searchDevice("");
-    } else if ((_selectedState != all) && (_selectedDepartment == all)) {
+    } else if ((_selectedState != AppDeviceTerm.all) && (_selectedDepartment == AppDeviceTerm.all)) {
       searchOnStatusDevice();
-    } else if ((_selectedDepartment != all) && (_selectedState == all)) {
+    } else if ((_selectedDepartment != AppDeviceTerm.all) && (_selectedState == AppDeviceTerm.all)) {
       searchOnDepartmentDevice();
     } else {
       searchOnDepartmentAndStatusDevice();
@@ -648,11 +652,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
   }
 
   void reApplySelection() {
-    if ((_selectedState == all) && (_selectedDepartment == all)) {
+    if ((_selectedState == AppDeviceTerm.all) && (_selectedDepartment == AppDeviceTerm.all)) {
       searchDevice("");
-    } else if ((_selectedState != all) && (_selectedDepartment == all)) {
+    } else if ((_selectedState != AppDeviceTerm.all) && (_selectedDepartment == AppDeviceTerm.all)) {
       searchOnStatusDevice();
-    } else if ((_selectedDepartment != all) && (_selectedState == all)) {
+    } else if ((_selectedDepartment != AppDeviceTerm.all) && (_selectedState == AppDeviceTerm.all)) {
       searchOnDepartmentDevice();
     } else {
       searchOnDepartmentAndStatusDevice();

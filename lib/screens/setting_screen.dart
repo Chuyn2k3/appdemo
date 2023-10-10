@@ -1,5 +1,9 @@
+import 'package:appdemo/services/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:appdemo/data/term/local_storage_pref_key.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -9,6 +13,93 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
+  bool isAuthenticated = false;
+  bool fingerprintEnabled = false;
+  final keyPref = SharedPrefKey();
+  Future<void> checkBiometrics() async {
+    bool canCheckBiometrics = await auth.canCheckBiometrics;
+    if (canCheckBiometrics) {
+      List<BiometricType> availableBiometrics =
+          await auth.getAvailableBiometrics();
+      if (availableBiometrics.contains(BiometricType.fingerprint)) {
+        setState(() {
+          isAuthenticated = true;
+        });
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: Text('ok'),
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: Text(availableBiometrics.toString()),
+            );
+          },
+        );
+      }
+    }
+  }
+
+  Future<void> authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticate(
+        localizedReason: "Scan your fingerprint to log in",
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Thông báo'),
+            content: Text('1'),
+          );
+        },
+      );
+    }
+    if (authenticated) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Thông báo'),
+            content: Text('ok'),
+          );
+        },
+      );
+      enableFingerprint();
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Thông báo'),
+            content: Text('2'),
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> enableFingerprint() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    fingerprintEnabled = await pref.setBool("fingerprintEnabled", true);
+  }
+
+  Future<void> checkFingerEnable() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    fingerprintEnabled = pref.getBool("fingerprintEnabled") ?? false;
+  }
+
   bool isSwitched = false;
   bool isSwitchedKey = false;
   final emailStore = new FlutterSecureStorage();
@@ -19,6 +110,10 @@ class _SettingScreenState extends State<SettingScreen> {
       setState(() {
         isSwitched = true;
       });
+      checkBiometrics();
+      if (isAuthenticated) {
+        authenticate();
+      }
     } else {
       setState(() {
         isSwitched = false;
@@ -40,21 +135,28 @@ class _SettingScreenState extends State<SettingScreen> {
 
   void clearEmailAndPassword() {
     if (isSwitchedKey == false) {
-      emailStore.delete(key: 'email1');
-      passwordStore.delete(key: 'password1');
-      emailStore.delete(key: 'email');
-      passwordStore.delete(key: 'password');
+      emailStore.delete(key: keyPref.keyEmailRememberToggle);
+      passwordStore.delete(key: keyPref.keyPasswordRememberToggle);
+      emailStore.delete(key: keyPref.keyEmailRemember);
+      passwordStore.delete(key: keyPref.keyPasswordRememer);
     }
   }
 
   String? email;
   String? password;
+  String? email1;
   void getSaveEmailAndPassword() async {
-    email = await emailStore.read(key: 'email');
-    password = await passwordStore.read(key: 'password');
+    email = await emailStore.read(key: keyPref.keyEmailRemember);
+    password = await passwordStore.read(key: keyPref.keyPasswordRememer);
+    email1 = await StoreLogin.getEmailFingerPrintRemember();
     if (email != null) {
       setState(() {
         isSwitchedKey = true;
+      });
+    }
+    if (email1 != null) {
+      setState(() {
+        isSwitched = true;
       });
     }
     setState(() {
@@ -86,99 +188,103 @@ class _SettingScreenState extends State<SettingScreen> {
                   topRight: Radius.circular(20), topLeft: Radius.circular(20))),
           child: Column(
             children: [
-              isLoading?CircularProgressIndicator():
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 10, right: 10, left: 10, bottom: 10),
-                height: 190,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: const Color.fromARGB(255, 234, 231, 231)),
-                child: Column(children: [
-                  Container(
-                      height: 70,
-                      width: double.infinity,
-                      margin:
-                          const EdgeInsets.only(top: 5, right: 10, left: 10),
-                      alignment: Alignment.center,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          const Row(
+              isLoading
+                  ? CircularProgressIndicator()
+                  : Container(
+                      margin: const EdgeInsets.only(
+                          top: 10, right: 10, left: 10, bottom: 10),
+                      height: 190,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color.fromARGB(255, 234, 231, 231)),
+                      child: Column(children: [
+                        Container(
+                            height: 70,
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(
+                                top: 5, right: 10, left: 10),
+                            alignment: Alignment.center,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                const Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Icon(Icons.settings),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      'Lưu mật khẩu',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                Positioned(
+                                    right: 3,
+                                    child: Switch(
+                                      value: isSwitchedKey,
+                                      onChanged: toggleSwitchKey,
+                                      activeColor: Colors.blue,
+                                      activeTrackColor: const Color.fromARGB(
+                                          255, 171, 206, 235),
+                                      inactiveThumbColor: const Color.fromARGB(
+                                          255, 234, 231, 231),
+                                      inactiveTrackColor: Colors.grey,
+                                    )),
+                              ],
+                            )),
+                        Divider(
+                          color: Colors.blue[700],
+                          thickness: 1.4,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                        Container(
+                          height: 70,
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(
+                              top: 5, right: 10, left: 10),
+                          alignment: Alignment.center,
+                          child: Stack(
                             children: [
-                              SizedBox(
-                                width: 20,
+                              const Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Icon(Icons.logout),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    'Xác thực bằng vân tay',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
                               ),
-                              Icon(Icons.settings),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                'Lưu mật khẩu',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
+                              Positioned(
+                                  bottom: -9,
+                                  right: 3,
+                                  child: Switch(
+                                    value: isSwitched,
+                                    onChanged: toggleSwitch,
+                                    activeColor: Colors.blue,
+                                    activeTrackColor: const Color.fromARGB(
+                                        255, 171, 206, 235),
+                                    inactiveThumbColor: const Color.fromARGB(
+                                        255, 234, 231, 231),
+                                    inactiveTrackColor: Colors.grey,
+                                  )),
                             ],
                           ),
-                          Positioned(
-                              right: 3,
-                              child: Switch(
-                                value: isSwitchedKey,
-                                onChanged: toggleSwitchKey,
-                                activeColor: Colors.blue,
-                                activeTrackColor:
-                                    const Color.fromARGB(255, 171, 206, 235),
-                                inactiveThumbColor:
-                                    const Color.fromARGB(255, 234, 231, 231),
-                                inactiveTrackColor: Colors.grey,
-                              )),
-                        ],
-                      )),
-                  Divider(
-                    color: Colors.blue[700],
-                    thickness: 1.4,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  Container(
-                    height: 70,
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(top: 5, right: 10, left: 10),
-                    alignment: Alignment.center,
-                    child: Stack(
-                      children: [
-                        const Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(Icons.logout),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Xác thực bằng vân tay',
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                          ],
                         ),
-                        Positioned(
-                            bottom: -9,
-                            right: 3,
-                            child: Switch(
-                              value: isSwitched,
-                              onChanged: toggleSwitch,
-                              activeColor: Colors.blue,
-                              activeTrackColor:
-                                  const Color.fromARGB(255, 171, 206, 235),
-                              inactiveThumbColor:
-                                  const Color.fromARGB(255, 234, 231, 231),
-                              inactiveTrackColor: Colors.grey,
-                            )),
-                      ],
+                      ]),
                     ),
-                  ),
-                ]),
-              ),
             ],
           ),
         ));
@@ -188,6 +294,10 @@ class _SettingScreenState extends State<SettingScreen> {
   void dispose() {
     if (isSwitchedKey == false) {
       clearEmailAndPassword();
+    }
+    if (isSwitched == false) {
+      StoreLogin.clearLoginUser();
+      StoreLogin.clearEmailFingerPrintRemember();
     }
     super.dispose();
   }

@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:appdemo/employees/employee_model.dart';
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/departments/department_model.dart';
 import 'package:appdemo/error/error_infomation_model.dart';
 import 'package:appdemo/inventory/inventoryInformationModel.dart';
 import 'package:appdemo/inventory/inventoryModel.dart';
 import 'package:appdemo/notificaton/notification_model.dart';
-import 'package:appdemo/user/logout_model.dart';
-import 'package:appdemo/user/user_model.dart';
+import 'package:appdemo/services/get_info_env_file.dart';
+import 'package:appdemo/statistic/model/statistic_model.dart';
+import 'package:appdemo/user/model/logout_model.dart';
+import 'package:appdemo/user/model/user_model.dart';
 import 'package:dio/dio.dart';
 import 'package:appdemo/services/store.dart';
 import 'package:intl/intl.dart';
@@ -38,9 +42,10 @@ class DemoAPI {
   }
 
   Future<UserModel?> diologin(String email, String password) async {
+    String apilink = await getLoginUrl()??"";
     try {
       final response = await _dio.post(
-        _loginUrl,
+        '$apilink/login',
         data: {"email": email, "password": password},
       );
       await _saveToken(response.data);
@@ -92,14 +97,15 @@ class DemoAPI {
 
   Future<DepartmentModel?> dioGetDepartmentData() async {
     try {
-      _dio.options.headers['Authorization'] =
-          'Bearer ${await Store.getToken()}';
+      final token = await Store.getToken();
+      _dio.options.headers['Authorization'] = 'Bearer $token';
+
       final response = await _dio.get(
         _departmentUrl,
         options: Options(
           method: 'get',
           headers: {
-            "Authorization": "Bearer ${await Store.getToken()}",
+            "Authorization": "Bearer $token",
             "Content-Type": "application/json",
           },
         ),
@@ -242,19 +248,56 @@ class DemoAPI {
   Future<LogoutModel?> dioLogout() async {
     try {
       _dio.options.headers['Authorization'] = 'Bearer ${Store.getToken()}';
-      final response = await _dio.post(
-        _logoutUrl,
+      final response = await _dio.post(_logoutUrl,
+          options: Options(
+            method: 'get',
+            headers: {
+              "Authorization": "Bearer ${await Store.getToken()}",
+              "Content-Type": "application/json",
+            },
+          ),
+          data: {
+            'email': await StoreLogin.getEmail(),
+            'password': await StoreLogin.getPassword()
+          });
+      try {
+        return LogoutModel.fromJson(response.data);
+      } catch (e) {
+        print('Lỗi khi lấy dữ liệu. Mã trạng thái: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  final String _statisticUrl =
+      'http://bvdemo.qltbyt.com/api/v1/count-broken-and-repairing-equipment-each-department';
+  //final token = await Store.getToken();
+  Future<List<StatisticModel>?> getStatistic() async {
+    try {
+      final token = await Store.getToken();
+      _dio.options.headers['Authorization'] = 'Bearer $token';
+
+      final response = await _dio.get(
+        _statisticUrl,
         options: Options(
           method: 'get',
           headers: {
-            "Authorization": "Bearer ${await Store.getToken()}",
+            "Authorization": "Bearer $token",
             "Content-Type": "application/json",
           },
         ),
-        data: {'email':await StoreLogin.getEmail(),'password':await StoreLogin.getPassword()}
       );
       try {
-        return LogoutModel.fromJson(response.data);
+        final List<dynamic> jsonList = jsonDecode(response.data);
+        final List<StatisticModel> result = [];
+        jsonList.forEach((json) {
+          final statistic = StatisticModel.fromJson(json);
+          result.add(statistic);
+        });
+        print(result);
+        return result;
       } catch (e) {
         print('Lỗi khi lấy dữ liệu. Mã trạng thái: ${response.statusCode}');
         return null;

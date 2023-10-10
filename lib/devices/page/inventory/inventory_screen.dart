@@ -1,4 +1,4 @@
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/inventory/inventoryModel.dart';
 import 'package:appdemo/services/api.dart';
 import 'package:flutter/material.dart';

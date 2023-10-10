@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers
 import 'package:appdemo/services/api.dart';
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/departments/department_model.dart';
 import 'package:appdemo/devices/get_device_list.dart';
 import 'package:flutter/material.dart';
-import 'package:appdemo/devices/detail_screen.dart';
+import 'package:appdemo/devices/page/devices/detail_screen.dart';
 
 class DeviceInDepartmentScreen extends StatefulWidget {
   final DepartmentData getDepartmentData;

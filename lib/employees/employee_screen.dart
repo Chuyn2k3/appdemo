@@ -2,6 +2,7 @@ import 'package:appdemo/employees/employee_model.dart';
 import 'package:appdemo/employees/get_employee_list.dart';
 import 'package:appdemo/services/api.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
@@ -243,7 +244,35 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                                               width: 5,
                                                             ),
                                                             GestureDetector(
-                                                              onTap: () {},
+                                                              onTap: () async{
+                                                                String? encodeQueryParameters(Map<String, String> params) {
+  return params.entries
+      .map((MapEntry<String, String> e) =>
+          '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+      .join('&');
+}
+                                                           final Uri emailUrl = Uri(
+                                                      scheme: 'mailto',
+                                                      path: _employee[index]
+                                                                    .email,
+                                                      query: encodeQueryParameters(<String, String>{
+      'subject': 'Example Subject & Symbols are allowed!',
+    }),    );
+
+                                                   try{
+                                                    await launchUrl(emailUrl);
+                                                   }catch(e){                                             
+                                                     showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: Text('Lỗi chuyển hướng'),
+            );
+          },
+        );
+                                                  }
+                                                              },
                                                               child: Text(
                                                                 _employee[index]
                                                                     .email,
@@ -270,7 +299,27 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                                               width: 5,
                                                             ),
                                                             GestureDetector(
-                                                              onTap: () {},
+                                                              onTap: () async{
+                                                                 final Uri phoneUrl = Uri(
+                                                      scheme: 'tel',
+                                                      path:  _employee[index]
+                                                                    .phone);
+
+                                                  if (await canLaunchUrl(phoneUrl)) {
+                                                    await launchUrl(phoneUrl);
+                                                  }
+                                                  else {
+                                                    showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Thông báo'),
+              content: Text('Lỗi chuyển hướng'),
+            );
+          },
+        );
+                                                  }
+                                                              },
                                                               child: Text(
                                                                 _employee[index]
                                                                     .phone,

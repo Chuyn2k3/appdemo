@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers
 
-import 'package:appdemo/devices/report_screen.dart';
+import 'package:appdemo/devices/page/report_error/report_screen.dart';
 import 'package:appdemo/screens/qr_screen.dart';
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/devices/get_device_list.dart';
 import 'package:flutter/material.dart';
 

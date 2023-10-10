@@ -1,7 +1,7 @@
-import 'package:appdemo/devices/inventory_screen.dart';
+import 'package:appdemo/devices/page/inventory/inventory_screen.dart';
 import 'package:appdemo/screens/qr_screen.dart';
 import 'package:appdemo/services/api.dart';
-import 'package:appdemo/devices/device_model.dart';
+import 'package:appdemo/devices/model/device_model.dart';
 import 'package:appdemo/devices/get_device_list.dart';
 import 'package:flutter/material.dart';
 

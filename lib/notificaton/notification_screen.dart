@@ -79,7 +79,7 @@ class _NotificationScreen extends State<NotificationScreen> {
                                     Container(
                                         padding: EdgeInsets.all(13),
                                         width: 300,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             color: Color.fromARGB(
                                                 255, 242, 241, 241),
                                             borderRadius: BorderRadius.all(
